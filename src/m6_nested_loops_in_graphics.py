@@ -3,8 +3,8 @@ This project demonstrates NESTED LOOPS (i.e., loops within loops)
 in the context of TWO-DIMENSIONAL GRAPHICS.
 
 Authors: David Mutchler, Valerie Galluzzi, Mark Hays, Amanda Stouder,
-         their colleagues and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+         their colleagues and Mitch Lugsch.
+"""  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 import rosegraphics as rg
 
@@ -80,9 +80,38 @@ def draw_L(window, circle, r, c):
     and m and n are small, positive integers.
     """
     # ------------------------------------------------------------------
-    # TODO: 2. Implement and test this function.
+    # DONE: 2. Implement and test this function.
     #     The testing code is already written for you (above).
     # ------------------------------------------------------------------
+    original_x = circle.center.x
+    original_y = circle.center.y
+    radius = circle.radius
+
+    x = original_x
+    y = original_y
+    for _ in range(r):  # Loop through the rows
+        for _ in range(3):  # Loop through the columns
+            new_circle = rg.Circle(rg.Point(x, y), radius)
+            new_circle.fill_color = circle.fill_color
+            new_circle.attach_to(window)
+            window.render()
+
+            x = x + (2 * radius)  # Move x to the right, for next circle
+
+        y = y + 2 * radius  # Move y down, for the next row of circles
+        x = original_x  # Reset x to the left-edge, for the next row
+
+    for _ in range(3):
+        for _ in range(c + 3):
+            new_circle = rg.Circle(rg.Point(x, y), radius)
+            new_circle.fill_color = circle.fill_color
+            new_circle.attach_to(window)
+            window.render()
+
+            x = x + (2 * radius)  # Move x to the right, for next circle
+
+        y = y + 2 * radius  # Move y down, for the next row of circles
+        x = original_x  # Reset x to the left-edge, for the next row
 
 
 def run_test_draw_wall_on_right():
@@ -121,9 +150,32 @@ def draw_wall_on_right(rectangle, n, window):
     and n is a small, positive integer.
     """
     # ------------------------------------------------------------------
-    # TODO: 3. Implement and test this function.
+    # DONE: 3. Implement and test this function.
     #     The testing code is already written for you (above).
     # ------------------------------------------------------------------
+    original_upper_left = rectangle.get_upper_left_corner()
+    original_lower_right = rectangle.get_lower_right_corner()
+    upper_left_x = original_upper_left.x
+    lower_right_x = original_lower_right.x
+    width = rectangle.get_width()
+    height = rectangle.get_height()
+
+    upper_left = original_upper_left
+    lower_right = original_lower_right
+
+    for j in range(n):  # Loop through the rows
+        for _ in range(j + 1):  # Loop through the columns
+            new_rectangle = rg.Rectangle(upper_left, lower_right)
+            new_rectangle.attach_to(window)
+            window.render(0.1)
+
+            upper_left.x = upper_left.x - width
+            lower_right.x = lower_right.x - width
+
+        upper_left.x = upper_left_x
+        lower_right.x = lower_right_x
+        upper_left.y = upper_left.y + height
+        lower_right.y = lower_right.y + height
 
 
 # ----------------------------------------------------------------------
